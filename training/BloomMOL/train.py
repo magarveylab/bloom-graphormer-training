@@ -13,8 +13,8 @@ def train(
     checkpoint_dir: str = f"{experiment_dir}/bloom-mol-mlm/checkpoints",
     checkpoint_name: str = "bloom-mol-mlm-{epoch:02d}-{val_loss:.2f}",
     logger_entity: str = "magarvey",
-    logger_name: str = "mlm",
-    logger_project: str = "Bloom-MOL",
+    logger_name: str = "bloom-mol-mlm",
+    logger_project: str = "BLOOM",
     trainer_strategy: str = "deepspeed_stage_3_offload",
     node_embedding_dim: int = 256,
     edge_embedding_dim: int = 128,
@@ -66,7 +66,7 @@ parser.add_argument(
 parser.add_argument(
     "-logger_name",
     help="wandb entity",
-    default="mlm",
+    default="bloom-mol-mlm",
 )
 parser.add_argument(
     "-node_embedding_dim",
