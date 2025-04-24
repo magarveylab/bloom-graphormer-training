@@ -37,3 +37,24 @@ def prepare_molecular_graphs(
         )
         G = out["graph"]
         pickle.dump(G, open(output_fp, "wb"))
+
+
+def prepare_bgc_graphs(
+    ibis_data_dir: str = f"{dataset_dir}/ibis_data",
+):
+    pass
+
+
+def prepare_lnk_graphs(
+    ibis_data_dir: str = f"{dataset_dir}/ibis_data",
+    bloom_dos_dir: str = f"{dataset_dir}/bloom_dos_annotations",
+):
+    # prepare dags
+
+    # preare mol graphs
+
+    # preapre bgc graphs
+
+    # unite graphs
+
+    pass
