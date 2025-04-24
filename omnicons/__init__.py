@@ -2,5 +2,7 @@ import os
 
 # package location
 curdir = os.path.abspath(os.path.dirname(__file__))
-# dat dir
-datdir = os.path.join(os.path.dirname(curdir), "training", "dat")
+# dataset directory (after downloaded from zenodo)
+dataset_dir = f"{curdir}/datasets"
+# default directory for training experiments
+experiment_dir = f"{curdir}/experiments"
