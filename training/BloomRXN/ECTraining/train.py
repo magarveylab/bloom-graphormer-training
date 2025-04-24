@@ -10,10 +10,11 @@ from omnicons.trainers import get_trainer
 
 
 def train(
-    checkpoint_dir: str = f"{experiment_dir}/bloom-rxn-mlm/checkpoints",
-    checkpoint_name: str = "bloom-rxn-mlm-{epoch:02d}-{val_loss:.2f}",
+    checkpoint_dir: str = f"{experiment_dir}/bloom-rxn-ec/checkpoints",
+    mlm_checkpoint_fp: str = f"{experiment_dir}/bloom-rxn-mlm/checkpoints/last.pt",
+    checkpoint_name: str = "bloom-rxn-ec-{epoch:02d}-{val_loss:.2f}",
     logger_entity: str = "magarvey",
-    logger_name: str = "bloom-rxn-mlm",
+    logger_name: str = "bloom-rxn-ec",
     logger_project: str = "BLOOM",
     trainer_strategy: str = "deepspeed_stage_3_offload",
     embedding_dim: int = 256,
@@ -24,7 +25,9 @@ def train(
     dm = ReactionDataModule()
     dm.setup()
     # model
-    model = get_model(embedding_dim=embedding_dim)
+    model = get_model(
+        dm=dm, embedding_dim=embedding_dim, mlm_checkpoint_fp=mlm_checkpoint_fp
+    )
     # trainer
     trainer = get_trainer(
         checkpoint_dir=checkpoint_dir,
@@ -37,16 +40,21 @@ def train(
     trainer.fit(model, dm)
 
 
-parser = argparse.ArgumentParser(description="Train Bloom-RXN MLM")
+parser = argparse.ArgumentParser(description="Train Bloom-RXN EC")
 parser.add_argument(
     "-checkpoint_dir",
     help="Directory to save checkpoints",
-    default=f"{experiment_dir}/bloom-rxn-mlm/checkpoints",
+    default=f"{experiment_dir}/bloom-rxn-ec/checkpoints",
+)
+parser.add_argument(
+    "-mlm_checkpoint_fp",
+    help="Pretrained checkpoint for mlm",
+    default=f"{experiment_dir}/bloom-rxn-mlm/checkpoints/last.pt",
 )
 parser.add_argument(
     "-checkpoint_name",
     help="checkpoint name for wandb",
-    default="bloom-rxn-mlm-{epoch:02d}-{val_loss:.2f}",
+    default="bloom-rxn-ec-{epoch:02d}-{val_loss:.2f}",
 )
 parser.add_argument(
     "-logger_entity",
@@ -56,7 +64,7 @@ parser.add_argument(
 parser.add_argument(
     "-logger_name",
     help="wandb entity",
-    default="bloom-rxn-mlm",
+    default="bloom-rxn-ec",
 )
 parser.add_argument(
     "-embedding_dim",

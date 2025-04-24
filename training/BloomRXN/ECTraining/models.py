@@ -1,9 +1,11 @@
-from typing import Callable, Optional
+from typing import Callable
 
 import torch
 from Bloom.BloomRXN.utils import get_atom_vocab, get_bond_vocab
+from DataModule import ReactionDataModule
 from torch.nn import ModuleDict
 
+from omnicons.class_dicts import get_ec_class_dict
 from omnicons.lightning.GraphModelForMultiTask import (
     GraphModelForMultiTaskLightning,
 )
@@ -85,33 +87,55 @@ def get_edge_pooler(embedding_dim: int):
     return edge_pooler_config
 
 
-def get_heads(atom_vocab, bond_vocab, embedding_dim: int):
-    from omnicons.configs.HeadConfigs import (
-        EdgeClsTaskHeadConfig,
-        NodeClsTaskHeadConfig,
-    )
+def get_heads(
+    embedding_dim: int,
+    weights: dict,
+    ec1_dict: dict,
+    ec2_dict: dict,
+    ec3_dict: dict,
+):
+    from omnicons.configs.HeadConfigs import GraphClsTaskHeadConfig
 
     heads = {}
-    heads["node_mask"] = NodeClsTaskHeadConfig(
+    heads["ec1"] = GraphClsTaskHeadConfig(
         hidden_size=embedding_dim,
         hidden_dropout_prob=0.1,
-        num_labels=len(atom_vocab),
+        num_labels=len(ec1_dict),
+        class_weight=weights["ec1"],
         multi_label=False,
     )
-    heads["edge_mask"] = EdgeClsTaskHeadConfig(
+    heads["ec2"] = GraphClsTaskHeadConfig(
         hidden_size=embedding_dim,
         hidden_dropout_prob=0.1,
-        num_labels=len(bond_vocab),
+        num_labels=len(ec2_dict),
+        class_weight=weights["ec2"],
+        multi_label=False,
+    )
+    heads["ec3"] = GraphClsTaskHeadConfig(
+        hidden_size=embedding_dim,
+        hidden_dropout_prob=0.1,
+        num_labels=len(ec3_dict),
+        class_weight=weights["ec3"],
+        multi_label=False,
     )
     return heads
 
 
 def get_model(
+    dm: ReactionDataModule,
+    mlm_checkpoint_fp: str,
     embedding_dim: int,
     optimizer: Callable = get_deepspeed_adamw,
 ):
+    # vocab
     atom_vocab = get_atom_vocab()
     bond_vocab = get_bond_vocab()
+    # data module
+    class_weights = dm.compute_class_weight()
+    # class dicts
+    ec1_dict = get_ec_class_dict(level=1)
+    ec2_dict = get_ec_class_dict(level=2)
+    ec3_dict = get_ec_class_dict(level=3)
     # model setup
     node_encoder_config = get_node_encoder(
         atom_vocab, embedding_dim=embedding_dim
@@ -123,32 +147,48 @@ def get_model(
     transformer_config = get_transformer(embedding_dim=embedding_dim)
     graph_pooler_config = get_graph_pooler(embedding_dim=embedding_dim)
     edge_pooler_config = get_edge_pooler(embedding_dim=embedding_dim)
-    heads = get_heads(atom_vocab, bond_vocab, embedding_dim=embedding_dim)
+    heads = get_heads(
+        embedding_dim=embedding_dim,
+        weights=class_weights,
+        ec1_dict=ec1_dict,
+        ec2_dict=ec2_dict,
+        ec3_dict=ec3_dict,
+    )
     # Metrics
     train_metrics = ModuleDict(
         {
-            "node_mask___a": ClassificationMetrics.get(
-                name="node_mask___a_train",
-                num_classes=len(atom_vocab),
+            "ec1___a": ClassificationMetrics.get(
+                name="ec1___a_train",
+                num_classes=len(ec1_dict),
                 task="multiclass",
             ),
-            "edge_mask___a": ClassificationMetrics.get(
-                name="edge_mask___a_train",
-                num_classes=len(bond_vocab),
+            "ec2___a": ClassificationMetrics.get(
+                name="ec2___a_train",
+                num_classes=len(ec2_dict),
+                task="multiclass",
+            ),
+            "ec3___a": ClassificationMetrics.get(
+                name="ec3___a_train",
+                num_classes=len(ec3_dict),
                 task="multiclass",
             ),
         }
     )
     val_metrics = ModuleDict(
         {
-            "node_mask___a": ClassificationMetrics.get(
-                name="node_mask___a_val",
-                num_classes=len(atom_vocab),
+            "ec1___a": ClassificationMetrics.get(
+                name="ec1___a_val",
+                num_classes=len(ec1_dict),
                 task="multiclass",
             ),
-            "edge_mask___a": ClassificationMetrics.get(
-                name="edge_mask___a_val",
-                num_classes=len(bond_vocab),
+            "ec2___a": ClassificationMetrics.get(
+                name="ec2___a_val",
+                num_classes=len(ec2_dict),
+                task="multiclass",
+            ),
+            "ec3___a": ClassificationMetrics.get(
+                name="ec3___a_val",
+                num_classes=len(ec3_dict),
                 task="multiclass",
             ),
         }
@@ -166,4 +206,7 @@ def get_model(
         train_metrics=train_metrics,
         val_metrics=val_metrics,
     )
+    # load weights from mlm model
+    states = torch.load(mlm_checkpoint_fp)
+    model.load_state_dict(states["state_dict"], strict=False)
     return model

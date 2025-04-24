@@ -1,17 +1,11 @@
-from typing import Dict
-
-from Bloom.BloomRXN.utils import get_atom_vocab, get_bond_vocab
 from pytorch_lightning import LightningDataModule
 from torch.utils.data import DataLoader
+from tqdm import tqdm
 
 from omnicons import dataset_dir
-from omnicons.collators.MaskCollators import (
-    EdgeWordMaskCollator,
-    NodeWordMaskCollator,
-)
-from omnicons.collators.MixedCollators import MixedCollator
 from omnicons.collators.StandardCollators import StandardCollator
 from omnicons.data.DatasetWrapper import GraphInMemoryDataset
+from omnicons.helpers import get_single_label_class_weight
 
 
 class ReactionDataModule(LightningDataModule):
@@ -19,9 +13,7 @@ class ReactionDataModule(LightningDataModule):
     def __init__(
         self,
         data_dir: str = f"{dataset_dir}/reaction_ec_tensors",
-        atom_vocab: Dict[str, int] = get_atom_vocab(),
-        bond_vocab: Dict[str, int] = get_bond_vocab(),
-        p: float = 0.15,  # masked percentage
+        in_memory: bool = True,
         batch_size: int = 100,
         num_workers: int = 0,
         persistent_workers: bool = False,
@@ -31,18 +23,11 @@ class ReactionDataModule(LightningDataModule):
         self.train_fh = f"{self.data_dir}/train"
         self.val_fh = f"{self.data_dir}/val"
         self.test_fh = f"{self.data_dir}/test"
+        self.in_memory = in_memory
         self.batch_size = batch_size
         self.num_workers = num_workers
         self.persistent_workers = persistent_workers
-        self.collator = MixedCollator(
-            collators=(
-                NodeWordMaskCollator(mask_id=atom_vocab["[MASK]"], p=p),
-                EdgeWordMaskCollator(mask_id=bond_vocab["[MASK]"], p=p),
-            ),
-            standard_collator=StandardCollator(
-                variables_to_adjust_by_precision=["extra_x", "extra_edge_attr"]
-            ),
-        )
+        self.collator = StandardCollator()
 
     def setup(self, stage: str = "fit"):
         if stage == "fit":
@@ -50,6 +35,23 @@ class ReactionDataModule(LightningDataModule):
             self.val = GraphInMemoryDataset(root=self.val_fh)
         if stage == "test":
             self.test = GraphInMemoryDataset(root=self.test_fh)
+
+    def compute_class_weight(self):
+        ec1_labels = []
+        ec2_labels = []
+        ec3_labels = []
+        l = self.train.len()
+        for idx in tqdm(range(l), total=l):
+            d = self.train.get(idx=idx)
+            ec1_labels.extend(d.graphs["a"].ec1.tolist())
+            ec2_labels.extend(d.graphs["a"].ec2.tolist())
+            ec3_labels.extend(d.graphs["a"].ec3.tolist())
+        weights = {
+            "ec1": get_single_label_class_weight(ec1_labels),
+            "ec2": get_single_label_class_weight(ec2_labels),
+            "ec3": get_single_label_class_weight(ec3_labels),
+        }
+        return weights
 
     def train_dataloader(self):
         train_dl = DataLoader(
