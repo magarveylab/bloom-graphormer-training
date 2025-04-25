@@ -19,7 +19,7 @@ class LNKDataModule(LightningDataModule):
     def __init__(
         self,
         dataset_fp: str = f"{dataset_dir}/bloom-lnk-datasets/final.csv",
-        graph_dir: str = f"{dataset_dir}/bloom_lnk_graphs",
+        graph_dir: str = f"{dataset_dir}/bloom-lnk-graphs",
         batch_size: int = 30,
         num_workers: int = 0,
         persistent_workers: bool = False,
