@@ -23,7 +23,7 @@ from omnicons.datasetprep import prepare_molecular_graphs
 prepare_molecular_graphs(cpus=10)
 ```
 ### Training and Model Deployment
-Masked Language Modeling (MLM) – Biosynthetic units and atoms are randomly masked, and the model is trained to predict their identities. This process enables the model to learn contextual relationships between biosynthetic substructures and atomic features within the molecule, generating embeddings that reflect the underlying biosynthetic ontology. `save.py` converts DeepSpeed checkpoints into standard PyTorch checkpoint format. `export.py` converts the trained PyTorch model into TorchScript format for deployment.
+**Masked Language Modeling (MLM)** – Trains the model to predict masked biosynthetic units and atoms. This process enables the model to learn contextual relationships between biosynthetic substructures and atomic features within the molecule, generating embeddings that reflect the underlying biosynthetic ontology. `save.py` converts DeepSpeed checkpoints into standard PyTorch checkpoint format. `export.py` converts the trained PyTorch model into TorchScript format for deployment.
 ```
 cd training/BloomMOL
 CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py -logger_entity new_user
@@ -42,7 +42,7 @@ prepare_bgc_graphs()
 ```
 
 ### Training and Model Deployment
-The model is trained to predict biosynthetic subtypes, domain architectures, and EC classifications from ORF- and domain-level embeddings.
+**Supervised Enzyme Classification** - Trains the model to predict biosynthetic subtypes, domain architectures, and EC classifications from ORF- and domain-level embeddings.
 ```
 cd training/BloomBGC
 CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py -logger_entity new_user
@@ -66,21 +66,21 @@ prepare_reaction_ec_fewshot_dataset()
 ```
 
 ### Training and Model Deployment
-Masked Language Modeling (MLM) - Masked Language Modeling (MLM) – Learns atomic structures by randomly masking atoms within molecular graphs and training the model to predict their identities.
+**Masked Language Modeling (MLM)** – Trains the model on atomic structures by randomly masking atoms within molecular graphs and training the model to predict their identities.
 ```
 cd training/BloomRXN/MLMTraining
 CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py -logger_entity new_user
 python save.py
 python export.py
 ```
-Supervised Learning of EC Hierarchy – Trains the model to predict enzyme classifications across all three EC levels using parallel classification heads. This multi-task setup captures hierarchical relationships and improves functional resolution across diverse enzymatic reactions.
+**Supervised Learning of EC Hierarchy** – Trains the model to predict enzyme classifications across all three EC levels using parallel classification heads. This multi-task setup captures hierarchical relationships and improves functional resolution across diverse enzymatic reactions.
 ```
 cd training/BloomRXN/ECTraining
 CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py -logger_entity new_user
 python save.py
 python export.py
 ```
-Contrastive Learning of EC Hierarchy – Trains the model to distinguish whether pairs of reactions share the same EC level 4 classification. This is performed in conjunction with supervised parallel classification across EC levels 1 to 3, enabling the model to learn both fine-grained and hierarchical enzymatic relationships.
+**Contrastive Learning of EC Hierarchy** – Trains the model to distinguish whether pairs of reactions share the same EC level 4 classification. This is performed in conjunction with supervised parallel classification across EC levels 1 to 3, enabling the model to learn both fine-grained and hierarchical enzymatic relationships.
 ```
 cd training/BloomRXN/ECFewShotTraining
 CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py -logger_entity new_user
