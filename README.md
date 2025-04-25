@@ -34,7 +34,7 @@ python export.py
 ## BLOOM-BGC Training
 
 ### Dataset Preparation
-Generate BGC graphs from IBIS outputs. The training dataset includes high-quality biosynthetic clusters identified across 40,000 genomes. Download and extract `ibis_quality.zip` from the accompanying Zenodo repository, and place the contents in this [directory](https://github.com/magarveylab/bloom-graphormer-training/tree/main/omnicons/datasets).
+Generate BGC graphs from IBIS outputs, following the train–validation–test split defined in the [BGC dataset table](https://github.com/magarveylab/bloom-graphormer-training/blob/main/omnicons/datasets/bgc_training_data.csv). The training dataset includes high-quality biosynthetic clusters identified across 40,000 genomes. Download and extract `ibis_quality.zip` from the accompanying Zenodo repository, and place the contents in this [directory](https://github.com/magarveylab/bloom-graphormer-training/tree/main/omnicons/datasets).
 ```python
 from omnicons.datasetprep import prepare_bgc_graphs
 
@@ -45,6 +45,44 @@ prepare_bgc_graphs()
 The model is trained to predict biosynthetic subtypes, domain architectures, and EC classifications from ORF- and domain-level embeddings.
 ```
 cd training/BloomBGC
+CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py -logger_entity new_user
+python save.py
+python export.py
+```
+
+## BLOOM-RXN Training
+
+### Dataset Preparation
+Generate reaction graphs and corresponding tensors locally from SMILES found in the reaction dataset table. Each reaction is annotated with its corresponding Enzyme Commission (EC) number. Creates a pairwise Siamese dataset for contrastive learning by sampling reaction pairs based on shared EC level 4 classifications.
+
+```python
+from omnicons.datasetprep import (
+    prepare_reaction_ec_dataset,
+    prepare_reaction_ec_fewshot_dataset
+)
+
+prepare_reaction_ec_dataset()
+prepare_reaction_ec_fewshot_dataset()
+```
+
+### Training and Model Deployment
+Masked Language Modeling (MLM) - Masked Language Modeling (MLM) – Learns atomic structures by randomly masking atoms within molecular graphs and training the model to predict their identities.
+```
+cd training/BloomRXN/MLMTraining
+CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py -logger_entity new_user
+python save.py
+python export.py
+```
+Supervised Learning of EC Hierarchy – Trains the model to predict enzyme classifications across all three EC levels using parallel classification heads. This multi-task setup captures hierarchical relationships and improves functional resolution across diverse enzymatic reactions.
+```
+cd training/BloomRXN/ECTraining
+CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py -logger_entity new_user
+python save.py
+python export.py
+```
+Contrastive Learning of EC Hierarchy – Trains the model to distinguish whether pairs of reactions share the same EC level 4 classification. This is performed in conjunction with supervised parallel classification across EC levels 1 to 3, enabling the model to learn both fine-grained and hierarchical enzymatic relationships.
+```
+cd training/BloomRXN/ECFewShotTraining
 CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py -logger_entity new_user
 python save.py
 python export.py
