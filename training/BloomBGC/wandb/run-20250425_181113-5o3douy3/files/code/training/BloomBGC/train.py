@@ -24,7 +24,9 @@ def train(
     # setup directories
     os.makedirs(checkpoint_dir, exist_ok=True)
     # data module
-    dm = BGCGraphDataModule()
+    dm = BGCGraphDataModule(
+        subset=10, graph_dir="/data/bearlinker/bgc_dataset/graphs"
+    )
     weights = dm.calculate_class_weights()
     # model
     model = get_model(

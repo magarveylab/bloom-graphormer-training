@@ -1,0 +1,43 @@
+diff --git a/training/BloomBGC/DataModule.py b/training/BloomBGC/DataModule.py
+index ca9d482..b7a94e4 100644
+--- a/training/BloomBGC/DataModule.py
++++ b/training/BloomBGC/DataModule.py
+@@ -88,7 +88,7 @@ class BGCGraphDataModule(LightningDataModule):
+     def calculate_class_weights(self):
+         # load datapoints
+         freq = {"ec4": [], "ec3": [], "ec2": [], "ec1": [], "module_tag": []}
+-        for r in tqdm(pd.read_csv(self.dataset_fp).to_dict("records")):
++        for r in tqdm(pd.read_csv(self.dataset_fp).to_dict("records")[:100]):
+             G = pickle.load(
+                 open(f"{self.graph_dir}/{r['cluster_id']}.pkl", "rb")
+             )
+diff --git a/training/BloomBGC/train.py b/training/BloomBGC/train.py
+index 2e0fad2..ccde853 100644
+--- a/training/BloomBGC/train.py
++++ b/training/BloomBGC/train.py
+@@ -24,10 +24,14 @@ def train(
+     # setup directories
+     os.makedirs(checkpoint_dir, exist_ok=True)
+     # data module
+-    dm = BGCGraphDataModule()
+-    dm.setup()
++    dm = BGCGraphDataModule(
++        subset=10, graph_dir="/data/bearlinker/bgc_dataset/graphs"
++    )
++    weights = dm.calculate_class_weights()
+     # model
+     model = get_model(
++        class_dict=dm.class_dict,
++        weights=weights,
+         node_embedding_dim=node_embedding_dim,
+         edge_embedding_dim=edge_embedding_dim,
+         num_gnn_heads=num_gnn_heads,
+@@ -61,7 +65,7 @@ parser.add_argument(
+ parser.add_argument(
+     "-logger_entity",
+     help="wandb entity",
+-    default="user",
++    default="magarvey",
+ )
+ parser.add_argument(
+     "-logger_name",

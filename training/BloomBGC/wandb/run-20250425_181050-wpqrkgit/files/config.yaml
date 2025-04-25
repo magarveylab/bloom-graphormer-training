@@ -1,0 +1,33 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    code_path: code/training/BloomBGC/train.py
+    python_version: 3.9.18
+    cli_version: 0.17.5
+    framework: huggingface
+    huggingface_version: 4.43.4
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1745619050
+    t:
+      1:
+      - 1
+      - 5
+      - 9
+      - 11
+      - 49
+      - 53
+      - 55
+      - 77
+      - 103
+      3:
+      - 13
+      - 23
+      4: 3.9.18
+      5: 0.17.5
+      6: 4.43.4
+      8:
+      - 5
+      13: linux-x86_64

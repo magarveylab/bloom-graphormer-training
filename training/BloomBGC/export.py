@@ -2,6 +2,7 @@ import argparse
 import os
 
 import torch
+from DataModule import BGCGraphDataModule
 from models import get_model
 
 from omnicons import experiment_dir
@@ -11,13 +12,17 @@ from omnicons.models.Compilers import compile_with_torchscript
 def compile_model(
     pytorch_checkpoint_fp: str = f"{experiment_dir}/bloom-bgc-mlm/checkpoints/last.pt",
     torchscript_dir: str = f"{experiment_dir}/bloom-bgc-mlm/torchscript",
-    node_embedding_dim: int = 128,
+    node_embedding_dim: int = 256,
     edge_embedding_dim: int = 128,
     num_gnn_heads: int = 8,
     num_transformer_heads: int = 8,
 ):
     # load model
+    dm = BGCGraphDataModule()
+    weights = dm.calculate_class_weights()
     model = get_model(
+        class_dict=dm.class_dict,
+        weights=weights,
         node_embedding_dim=node_embedding_dim,
         edge_embedding_dim=edge_embedding_dim,
         num_gnn_heads=num_gnn_heads,
