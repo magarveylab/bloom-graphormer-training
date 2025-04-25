@@ -12,6 +12,7 @@ Training scripts for BLOOM Graphormer models for publication
 ```
 2. Set Up Weights & Biases (wandb)
     - Follow the [official quickstart guide](https://docs.wandb.ai/quickstart/) to configure Weights & Biases for experiment tracking.
+3. Download the datasets from Zenodo and place the extracted contents in this [directory](https://github.com/magarveylab/bloom-graphormer-training/tree/main/omnicons/datasets).
 
 ## BLOOM-MOL Training
 
@@ -34,7 +35,8 @@ python export.py
 ## BLOOM-BGC Training
 
 ### Dataset Preparation
-Generate BGC graphs from IBIS outputs, following the train–validation–test split defined in the [BGC dataset table](https://github.com/magarveylab/bloom-graphormer-training/blob/main/omnicons/datasets/bgc_training_data.csv). The training dataset includes high-quality biosynthetic clusters identified across 40,000 genomes. Download and extract `ibis_quality.zip` from the accompanying Zenodo repository, and place the contents in this [directory](https://github.com/magarveylab/bloom-graphormer-training/tree/main/omnicons/datasets).
+Generate BGC graphs from IBIS outputs, following the train–validation–test split defined in the [BGC dataset table](https://github.com/magarveylab/bloom-graphormer-training/blob/main/omnicons/datasets/bgc_training_data.csv). The training dataset includes high-quality biosynthetic clusters identified across 40,000 genomes. Download and extract `ibis_quality.zip` from the accompanying Zenodo repository.
+
 ```python
 from omnicons.datasetprep import prepare_bgc_graphs
 
