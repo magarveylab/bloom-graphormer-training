@@ -1,3 +1,4 @@
 reaction_fewshot_ec.csv
 molecular_graphs/*
 bloom_dos_annotations/*
+bgc_graphs/*

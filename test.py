@@ -1,3 +1,3 @@
-from omnicons.datasetprep import prepare_molecular_graphs
+from omnicons.datasetprep import prepare_bgc_graphs
 
-prepare_molecular_graphs(cpus=10)
+prepare_bgc_graphs()

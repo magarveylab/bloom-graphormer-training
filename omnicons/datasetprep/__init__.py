@@ -51,6 +51,7 @@ def prepare_bgc_graphs(
 ):
     from Bloom.BloomEmbedder.graphs.BGCGraph import BGCGraph
 
+    os.makedirs(output_dir, exist_ok=True)
     filenames = glob(f"{ibis_data_dir}/*")
     for fp in tqdm(filenames):
         out = BGCGraph.build_from_ibis_output(fp)
