@@ -1,3 +1,7 @@
-from omnicons.datasetprep import prepare_bgc_graphs
+from omnicons.datasetprep import (
+    prepare_reaction_ec_dataset,
+    prepare_reaction_ec_fewshot_dataset,
+)
 
-prepare_bgc_graphs()
+prepare_reaction_ec_dataset()
+prepare_reaction_ec_fewshot_dataset()

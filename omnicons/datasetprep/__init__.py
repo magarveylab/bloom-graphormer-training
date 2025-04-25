@@ -133,8 +133,11 @@ def prepare_reaction_ec_dataset(
     rxn_dataset_fp: str = f"{dataset_dir}/reaction_ec.csv",
     output_dir: str = f"{dataset_dir}/reaction_ec_tensors",
 ):
+    from Bloom.BloomRXN.inference.Pipeline import (
+        get_atom_vocab,
+        get_bond_vocab,
+    )
     from Bloom.BloomRXN.inference.Preprocess import rxnsmiles2tensor
-    from Bloom.BloomRXN.utils import get_atom_vocab, get_bond_vocab
 
     from omnicons.class_dicts import get_ec_class_dict
 
@@ -156,29 +159,36 @@ def prepare_reaction_ec_dataset(
         output_fp = f"{output_dir}/{split}/{reaction_id}.pt"
         if os.path.exists(output_fp):
             continue
-        data = rxnsmiles2tensor(
-            rxn_smiles,
-            atom_vocab=atom_vocab,
-            bond_vocab=bond_vocab,
-        )
-        data.graphs["a"].ec1 = torch.LongTensor(
-            [ec1_class_dict.get(rec["ec1"], -100)]
-        )
-        data.graphs["a"].ec2 = torch.LongTensor(
-            [ec2_class_dict.get(rec["ec2"], -100)]
-        )
-        data.graphs["a"].ec3 = torch.LongTensor(
-            [ec3_class_dict.get(rec["ec3"], -100)]
-        )
-        torch.save(data, output_fp)
+        try:
+            data = rxnsmiles2tensor(
+                rxn_smiles,
+                atom_vocab=atom_vocab,
+                bond_vocab=bond_vocab,
+            )
+            data = MultiInputData(graphs={"a": data})
+            data.graphs["a"].ec1 = torch.LongTensor(
+                [ec1_class_dict.get(rec["ec1"], -100)]
+            )
+            data.graphs["a"].ec2 = torch.LongTensor(
+                [ec2_class_dict.get(rec["ec2"], -100)]
+            )
+            data.graphs["a"].ec3 = torch.LongTensor(
+                [ec3_class_dict.get(rec["ec3"], -100)]
+            )
+            torch.save(data, output_fp)
+        except:
+            print(rec)
 
 
 def prepare_reaction_ec_fewshot_dataset(
     rxn_dataset_fp: str = f"{dataset_dir}/reaction_ec_fewshot_dataset",
     output_dir: str = f"{dataset_dir}/reaction_ec_fewshot_tensors",
 ):
+    from Bloom.BloomRXN.inference.Pipeline import (
+        get_atom_vocab,
+        get_bond_vocab,
+    )
     from Bloom.BloomRXN.inference.Preprocess import rxnsmiles2tensor
-    from Bloom.BloomRXN.utils import get_atom_vocab, get_bond_vocab
 
     from omnicons.class_dicts import get_ec_class_dict
 

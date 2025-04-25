@@ -3,6 +3,9 @@ from typing import List, Optional, Tuple, Union
 from torch import nn
 
 from omnicons.configs.Config import ConfigTemplate
+from omnicons.models.heads.EdgeClassification import (
+    SingleLabelEdgeClassificationHead,
+)
 from omnicons.models.heads.NodeClassification import (
     MultiLabelNodeClassificationHead,
     SingleLabelNodeClassificationHead,
@@ -73,4 +76,33 @@ class SiameseGraphClsTaskHeadConfig(ConfigTemplate):
         return SiameseGraphClassificationHead(**self.properties)
 
 
-HeadConfig = Union[NodeClsTaskHeadConfig, SiameseGraphClsTaskHeadConfig]
+class EdgeClsTaskHeadConfig(ConfigTemplate):
+
+    def __init__(
+        self,
+        hidden_size: int = 768,
+        hidden_dropout_prob: float = 0.1,
+        num_labels: int = 2,
+        class_weight: Optional[List[float]] = None,
+        analyze_inputs: List[str] = ["a"],
+        edge_type: tuple = None,
+    ):
+        super().__init__(
+            base="EdgeClsTaskHead",
+            properties={
+                "hidden_size": hidden_size,
+                "hidden_dropout_prob": hidden_dropout_prob,
+                "num_labels": num_labels,
+                "class_weight": class_weight,
+                "analyze_inputs": analyze_inputs,
+                "edge_type": edge_type,
+            },
+        )
+
+    def get_model(self) -> nn.Module:
+        return SingleLabelEdgeClassificationHead(**self.properties)
+
+
+HeadConfig = Union[
+    NodeClsTaskHeadConfig, SiameseGraphClsTaskHeadConfig, EdgeClsTaskHeadConfig
+]

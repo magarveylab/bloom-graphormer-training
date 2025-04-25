@@ -140,9 +140,7 @@ def get_model(
     node_encoder_config = get_node_encoder(
         atom_vocab, embedding_dim=embedding_dim
     )
-    edge_encoder_config = get_edge_encoder(
-        bond_vocab, embedding_dim=embedding_dim
-    )
+    edge_encoder_config = get_edge_encoder(bond_vocab)
     gnn_config = get_gnn(embedding_dim=embedding_dim)
     transformer_config = get_transformer(embedding_dim=embedding_dim)
     graph_pooler_config = get_graph_pooler(embedding_dim=embedding_dim)

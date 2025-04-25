@@ -1,0 +1,1282 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    python_version: 3.9.0
+    cli_version: 0.15.2
+    framework: huggingface
+    huggingface_version: 4.29.1
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1693318516.084458
+    t:
+      1:
+      - 1
+      - 5
+      - 9
+      - 11
+      - 41
+      - 49
+      - 53
+      - 55
+      - 77
+      2:
+      - 1
+      - 5
+      - 9
+      - 11
+      - 41
+      - 49
+      - 53
+      - 55
+      - 77
+      3:
+      - 7
+      - 13
+      - 23
+      4: 3.9.0
+      5: 0.15.2
+      6: 4.29.1
+      8:
+      - 5
+    m:
+    - 1: trainer/global_step
+      6:
+      - 3
+    - 1: train_loss_step
+      5: 1
+      6:
+      - 1
+    - 1: ec1___a_train_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: ec1___a_train_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: ec1___a_train_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: ec1___a_train_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: ec1___b_train_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: ec1___b_train_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: ec1___b_train_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: ec1___b_train_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: ec2___a_train_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: ec2___a_train_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: ec2___a_train_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: ec2___a_train_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: ec2___b_train_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: ec2___b_train_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: ec2___b_train_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: ec2___b_train_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: ec3___a_train_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: ec3___a_train_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: ec3___a_train_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: ec3___a_train_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: ec3___b_train_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: ec3___b_train_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: ec3___b_train_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: ec3___b_train_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: pair_match___a___b_train_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: pair_match___a___b_train_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: pair_match___a___b_train_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: pair_match___a___b_train_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___a_train_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___a_train_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___a_train_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___a_train_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___b_train_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___b_train_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___b_train_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___b_train_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___c_train_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___c_train_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___c_train_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___c_train_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___d_train_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___d_train_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___d_train_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___d_train_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___a_train_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___a_train_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___a_train_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___a_train_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___b_train_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___b_train_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___b_train_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___b_train_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___c_train_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___c_train_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___c_train_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___c_train_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___d_train_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___d_train_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___d_train_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___d_train_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___a_train_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___a_train_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___a_train_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___a_train_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___b_train_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___b_train_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___b_train_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___b_train_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___c_train_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___c_train_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___c_train_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___c_train_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___d_train_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___d_train_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___d_train_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___d_train_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: epoch
+      5: 1
+      6:
+      - 1
+    - 1: val_loss_step
+      5: 1
+      6:
+      - 1
+    - 1: ec1___a_val_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: ec1___a_val_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: ec1___a_val_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: ec1___a_val_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: ec1___b_val_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: ec1___b_val_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: ec1___b_val_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: ec1___b_val_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: ec2___a_val_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: ec2___a_val_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: ec2___a_val_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: ec2___a_val_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: ec2___b_val_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: ec2___b_val_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: ec2___b_val_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: ec2___b_val_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: ec3___a_val_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: ec3___a_val_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: ec3___a_val_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: ec3___a_val_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: ec3___b_val_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: ec3___b_val_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: ec3___b_val_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: ec3___b_val_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: pair_match___a___b_val_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: pair_match___a___b_val_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: pair_match___a___b_val_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: pair_match___a___b_val_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___a_val_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___a_val_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___a_val_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___a_val_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___b_val_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___b_val_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___b_val_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___b_val_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___c_val_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___c_val_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___c_val_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___c_val_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___d_val_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___d_val_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___d_val_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___d_val_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___a_val_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___a_val_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___a_val_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___a_val_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___b_val_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___b_val_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___b_val_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___b_val_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___c_val_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___c_val_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___c_val_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___c_val_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___d_val_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___d_val_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___d_val_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___d_val_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___a_val_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___a_val_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___a_val_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___a_val_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___b_val_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___b_val_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___b_val_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___b_val_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___c_val_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___c_val_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___c_val_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___c_val_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___d_val_accuracy_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___d_val_f1score_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___d_val_precision_step
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___d_val_recall_step
+      5: 1
+      6:
+      - 1
+    - 1: val_loss_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec1___a_val_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec1___a_val_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec1___a_val_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec1___a_val_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec1___b_val_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec1___b_val_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec1___b_val_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec1___b_val_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec2___a_val_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec2___a_val_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec2___a_val_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec2___a_val_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec2___b_val_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec2___b_val_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec2___b_val_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec2___b_val_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec3___a_val_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec3___a_val_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec3___a_val_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec3___a_val_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec3___b_val_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec3___b_val_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec3___b_val_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec3___b_val_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: pair_match___a___b_val_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: pair_match___a___b_val_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: pair_match___a___b_val_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: pair_match___a___b_val_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___a_val_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___a_val_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___a_val_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___a_val_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___b_val_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___b_val_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___b_val_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___b_val_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___c_val_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___c_val_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___c_val_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___c_val_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___d_val_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___d_val_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___d_val_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___d_val_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___a_val_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___a_val_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___a_val_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___a_val_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___b_val_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___b_val_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___b_val_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___b_val_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___c_val_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___c_val_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___c_val_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___c_val_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___d_val_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___d_val_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___d_val_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___d_val_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___a_val_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___a_val_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___a_val_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___a_val_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___b_val_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___b_val_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___b_val_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___b_val_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___c_val_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___c_val_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___c_val_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___c_val_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___d_val_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___d_val_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___d_val_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___d_val_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: train_loss_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec1___a_train_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec1___a_train_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec1___a_train_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec1___a_train_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec1___b_train_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec1___b_train_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec1___b_train_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec1___b_train_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec2___a_train_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec2___a_train_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec2___a_train_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec2___a_train_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec2___b_train_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec2___b_train_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec2___b_train_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec2___b_train_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec3___a_train_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec3___a_train_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec3___a_train_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec3___a_train_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec3___b_train_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec3___b_train_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec3___b_train_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: ec3___b_train_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: pair_match___a___b_train_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: pair_match___a___b_train_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: pair_match___a___b_train_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: pair_match___a___b_train_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___a_train_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___a_train_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___a_train_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___a_train_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___b_train_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___b_train_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___b_train_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___b_train_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___c_train_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___c_train_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___c_train_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___c_train_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___d_train_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___d_train_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___d_train_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec1___d_train_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___a_train_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___a_train_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___a_train_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___a_train_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___b_train_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___b_train_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___b_train_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___b_train_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___c_train_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___c_train_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___c_train_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___c_train_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___d_train_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___d_train_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___d_train_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec2___d_train_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___a_train_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___a_train_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___a_train_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___a_train_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___b_train_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___b_train_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___b_train_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___b_train_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___c_train_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___c_train_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___c_train_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___c_train_recall_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___d_train_accuracy_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___d_train_f1score_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___d_train_precision_epoch
+      5: 1
+      6:
+      - 1
+    - 1: product_atoms_ec3___d_train_recall_epoch
+      5: 1
+      6:
+      - 1

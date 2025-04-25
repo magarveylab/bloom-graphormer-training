@@ -1,6 +1,6 @@
 from typing import Dict
 
-from Bloom.BloomRXN.utils import get_atom_vocab, get_bond_vocab
+from Bloom.BloomRXN.inference.Pipeline import get_atom_vocab, get_bond_vocab
 from pytorch_lightning import LightningDataModule
 from torch.utils.data import DataLoader
 

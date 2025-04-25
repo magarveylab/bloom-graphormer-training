@@ -22,7 +22,6 @@ def train(
     os.makedirs(checkpoint_dir, exist_ok=True)
     # data module
     dm = ReactionDataModule()
-    dm.setup()
     # model
     model = get_model(embedding_dim=embedding_dim)
     # trainer
@@ -51,7 +50,7 @@ parser.add_argument(
 parser.add_argument(
     "-logger_entity",
     help="wandb entity",
-    default="user",
+    default="magarvey",
 )
 parser.add_argument(
     "-logger_name",
