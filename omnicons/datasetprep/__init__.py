@@ -219,22 +219,22 @@ def prepare_reaction_ec_fewshot_dataset(
         )
         # add ec labels to graphs a
         data.graphs["a"].ec1 = torch.LongTensor(
-            [ec1_class_dict["ec1"].get(rec["a_ec1"], -100)]
+            [ec1_class_dict["ec1"].get(rec["ec1_a"], -100)]
         )
         data.graphs["a"].ec2 = torch.LongTensor(
-            [ec2_class_dict["ec2"].get(rec["a_ec2"], -100)]
+            [ec2_class_dict["ec2"].get(rec["ec2_b"], -100)]
         )
         data.graphs["a"].ec3 = torch.LongTensor(
-            [ec3_class_dict["ec3"].get(rec["a_ec3"], -100)]
+            [ec3_class_dict["ec3"].get(rec["ec3_a"], -100)]
         )
         # add ec labels to graphs b
         data.graphs["b"].ec1 = torch.LongTensor(
-            [ec1_class_dict["ec1"].get(rec["b_ec1"], -100)]
+            [ec1_class_dict["ec1"].get(rec["ec1_b"], -100)]
         )
         data.graphs["b"].ec2 = torch.LongTensor(
-            [ec2_class_dict["ec2"].get(rec["b_ec2"], -100)]
+            [ec2_class_dict["ec2"].get(rec["ec2_b"], -100)]
         )
         data.graphs["b"].ec3 = torch.LongTensor(
-            [ec3_class_dict["ec3"].get(rec["b_ec3"], -100)]
+            [ec3_class_dict["ec3"].get(rec["ec3_b"], -100)]
         )
         torch.save(data, output_fp)
