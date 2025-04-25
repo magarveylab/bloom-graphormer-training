@@ -66,7 +66,7 @@ prepare_reaction_ec_fewshot_dataset()
 ```
 
 ### Training and Model Deployment
-**Masked Language Modeling (MLM)** – Trains the model on atomic structures by randomly masking atoms within molecular graphs and training the model to predict their identities.
+**Masked Language Modeling (MLM)** – Trains the model to predict masked atoms within molecular graphs.
 ```
 cd training/BloomRXN/MLMTraining
 CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py -logger_entity new_user
@@ -83,6 +83,26 @@ python export.py
 **Contrastive Learning of EC Hierarchy** – Trains the model to distinguish whether pairs of reactions share the same EC level 4 classification. This is performed in conjunction with supervised parallel classification across EC levels 1 to 3, enabling the model to learn both fine-grained and hierarchical enzymatic relationships.
 ```
 cd training/BloomRXN/ECFewShotTraining
+CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py -logger_entity new_user
+python save.py
+python export.py
+```
+
+## BLOOM-LNK Training
+
+### Dataset Preparation
+Download and extract `ibis_known_bgcs.zip` from Zenodo, which contains all known BGC results from IBIS. Additionally, download and extract `sm_dags.zip` and `sm_graphs.zip` to construct the corresponding BGC-metabolite graphs. Training pairs follow a k-fold split defined in this [directory](https://github.com/magarveylab/bloom-graphormer-training/tree/main/omnicons/datasets/bloom-lnk-datasets).
+
+```python
+from omnicons.datasetprep import prepare_lnk_graphs
+
+prepare_lnk_graphs()
+```
+
+### Training and Model Deployment
+**Supervised Classification of Pairs** – Trains the model to predict whether a given BGC–metabolite pair represents a true biosynthetic link. Ground truth pairs are derived from known associations, while negatives are sampled to maintain class balance during training.
+```
+cd training/BloomLNK
 CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py -logger_entity new_user
 python save.py
 python export.py
