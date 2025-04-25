@@ -21,6 +21,8 @@ def prepare_molecular_graphs(
     from Bloom import BloomDOS
     from Bloom.BloomEmbedder.graphs.MoleculeGraph import MoleculeGraph
 
+    os.makedirs(bloom_dos_dir, exist_ok=True)
+    os.makedirs(output_dir, exist_ok=True)
     # get bloom annotations
     data = pd.read_csv(dataset_fp).to_dict("records")
     BloomDOS.multiprocess_subission(

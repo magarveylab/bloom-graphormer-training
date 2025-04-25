@@ -1,2 +1,7 @@
 omnicons.egg-info/*
 **.pyc
+test.pyc
+*.log
+*.wandb
+*wandb-metadata.json
+*latest-run

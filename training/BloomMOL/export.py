@@ -11,7 +11,7 @@ from omnicons.models.Compilers import compile_with_torchscript
 def compile_model(
     pytorch_checkpoint_fp: str = f"{experiment_dir}/bloom-mol-mlm/checkpoints/last.pt",
     torchscript_dir: str = f"{experiment_dir}/bloom-mol-mlm/torchscript",
-    node_embedding_dim: int = 128,
+    node_embedding_dim: int = 256,
     edge_embedding_dim: int = 128,
     num_gnn_heads: int = 8,
     num_transformer_heads: int = 8,

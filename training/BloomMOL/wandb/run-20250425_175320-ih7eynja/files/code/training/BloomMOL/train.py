@@ -24,7 +24,9 @@ def train(
     # setup directories
     os.makedirs(checkpoint_dir, exist_ok=True)
     # data module
-    dm = MolGraphDataModule()
+    dm = MolGraphDataModule(
+        subset=10, graph_dir="/data/bearlinker/molecular_dataset/graphs"
+    )
     # model
     model = get_model(
         node_embedding_dim=node_embedding_dim,

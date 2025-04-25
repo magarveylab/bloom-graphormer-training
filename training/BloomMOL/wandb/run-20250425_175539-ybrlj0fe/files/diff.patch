@@ -1,0 +1,53 @@
+diff --git a/.gitignore b/.gitignore
+index 2188d06..ab2ec5f 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -1,2 +1,7 @@
+ omnicons.egg-info/*
+-**.pyc
+\ No newline at end of file
++**.pyc
++test.pyc
++*.log
++*.wandb
++*wandb-metadata.json
++*latest-run
+\ No newline at end of file
+diff --git a/omnicons/datasetprep/__init__.py b/omnicons/datasetprep/__init__.py
+index c187d90..806e0f8 100644
+--- a/omnicons/datasetprep/__init__.py
++++ b/omnicons/datasetprep/__init__.py
+@@ -21,6 +21,8 @@ def prepare_molecular_graphs(
+     from Bloom import BloomDOS
+     from Bloom.BloomEmbedder.graphs.MoleculeGraph import MoleculeGraph
+ 
++    os.makedirs(bloom_dos_dir, exist_ok=True)
++    os.makedirs(output_dir, exist_ok=True)
+     # get bloom annotations
+     data = pd.read_csv(dataset_fp).to_dict("records")
+     BloomDOS.multiprocess_subission(
+diff --git a/training/BloomMOL/train.py b/training/BloomMOL/train.py
+index 5863bc9..a298ce5 100644
+--- a/training/BloomMOL/train.py
++++ b/training/BloomMOL/train.py
+@@ -24,8 +24,9 @@ def train(
+     # setup directories
+     os.makedirs(checkpoint_dir, exist_ok=True)
+     # data module
+-    dm = MolGraphDataModule()
+-    dm.setup()
++    dm = MolGraphDataModule(
++        subset=10, graph_dir="/data/bearlinker/molecular_dataset/graphs"
++    )
+     # model
+     model = get_model(
+         node_embedding_dim=node_embedding_dim,
+@@ -61,7 +62,7 @@ parser.add_argument(
+ parser.add_argument(
+     "-logger_entity",
+     help="wandb entity",
+-    default="user",
++    default="magarvey",
+ )
+ parser.add_argument(
+     "-logger_name",
