@@ -53,7 +53,7 @@ python export.py
 ## BLOOM-RXN Training
 
 ### Dataset Preparation
-Generate reaction graphs and corresponding tensors locally from SMILES found in the reaction dataset table. Each reaction is annotated with its corresponding Enzyme Commission (EC) number. Creates a pairwise Siamese dataset for contrastive learning by sampling reaction pairs based on shared EC level 4 classifications.
+Generate reaction graphs and corresponding tensors locally from SMILES found in the [reaction dataset table](https://github.com/magarveylab/bloom-graphormer-training/blob/main/omnicons/datasets/reaction_ec.csv). Each reaction is annotated with its corresponding Enzyme Commission (EC) number. Download `reaction_fewshot_ec.csv` from Zenodo — this file contains a pairwise Siamese dataset for contrastive learning, with reaction pairs sampled based on shared EC level 4 classifications.
 
 ```python
 from omnicons.datasetprep import (
