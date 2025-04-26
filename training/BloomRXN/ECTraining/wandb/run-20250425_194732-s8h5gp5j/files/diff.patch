@@ -1,0 +1,132 @@
+diff --git a/omnicons/configs/HeadConfigs.py b/omnicons/configs/HeadConfigs.py
+index fa91b68..7894897 100644
+--- a/omnicons/configs/HeadConfigs.py
++++ b/omnicons/configs/HeadConfigs.py
+@@ -6,6 +6,10 @@ from omnicons.configs.Config import ConfigTemplate
+ from omnicons.models.heads.EdgeClassification import (
+     SingleLabelEdgeClassificationHead,
+ )
++from omnicons.models.heads.GraphClassification import (
++    MultiLabelGraphClassification,
++    SingleLabelGraphClassification,
++)
+ from omnicons.models.heads.NodeClassification import (
+     MultiLabelNodeClassificationHead,
+     SingleLabelNodeClassificationHead,
+@@ -103,6 +107,41 @@ class EdgeClsTaskHeadConfig(ConfigTemplate):
+         return SingleLabelEdgeClassificationHead(**self.properties)
+ 
+ 
++class GraphClsTaskHeadConfig(ConfigTemplate):
++
++    def __init__(
++        self,
++        hidden_size: int = 768,
++        hidden_dropout_prob: float = 0.1,
++        num_labels: int = 2,
++        class_weight: Optional[List[float]] = None,
++        multi_label: bool = False,
++        analyze_inputs: List[str] = ["a"],
++        loss_scalar: float = 1.0,
++    ):
++        super().__init__(
++            base="GraphClsTaskHead",
++            properties={
++                "hidden_size": hidden_size,
++                "hidden_dropout_prob": hidden_dropout_prob,
++                "num_labels": num_labels,
++                "class_weight": class_weight,
++                "multi_label": multi_label,
++                "analyze_inputs": analyze_inputs,
++                "loss_scalar": loss_scalar,
++            },
++        )
++
++    def get_model(self) -> nn.Module:
++        if self.properties["multi_label"] == True:
++            return MultiLabelGraphClassification(**self.properties)
++        else:
++            return SingleLabelGraphClassification(**self.properties)
++
++
+ HeadConfig = Union[
+-    NodeClsTaskHeadConfig, SiameseGraphClsTaskHeadConfig, EdgeClsTaskHeadConfig
++    NodeClsTaskHeadConfig,
++    SiameseGraphClsTaskHeadConfig,
++    EdgeClsTaskHeadConfig,
++    GraphClsTaskHeadConfig,
+ ]
+diff --git a/omnicons/datasetprep/__init__.py b/omnicons/datasetprep/__init__.py
+index 4308b95..74d64e0 100644
+--- a/omnicons/datasetprep/__init__.py
++++ b/omnicons/datasetprep/__init__.py
+@@ -143,9 +143,9 @@ def prepare_reaction_ec_dataset(
+ 
+     atom_vocab = get_atom_vocab()
+     bond_vocab = get_bond_vocab()
+-    ec1_class_dict = get_ec_class_dict(level=1, reverse=True)
+-    ec2_class_dict = get_ec_class_dict(level=2, reverse=True)
+-    ec3_class_dict = get_ec_class_dict(level=3, reverse=True)
++    ec1_class_dict = get_ec_class_dict(level=1, reverse=False)
++    ec2_class_dict = get_ec_class_dict(level=2, reverse=False)
++    ec3_class_dict = get_ec_class_dict(level=3, reverse=False)
+ 
+     os.makedirs(f"{output_dir}/train", exist_ok=True)
+     os.makedirs(f"{output_dir}/val", exist_ok=True)
+@@ -153,13 +153,13 @@ def prepare_reaction_ec_dataset(
+ 
+     data = pd.read_csv(rxn_dataset_fp).to_dict("records")
+     for rec in tqdm(data):
+-        split = rec["split"]
+-        reaction_id = rec["reaction_id"]
+-        rxn_smiles = rec["rxn_smiles"]
+-        output_fp = f"{output_dir}/{split}/{reaction_id}.pt"
+-        if os.path.exists(output_fp):
+-            continue
+         try:
++            split = rec["split"]
++            reaction_id = rec["reaction_id"]
++            rxn_smiles = rec["rxn_smiles"]
++            output_fp = f"{output_dir}/{split}/{reaction_id}.pt"
++            if os.path.exists(output_fp):
++                continue
+             data = rxnsmiles2tensor(
+                 rxn_smiles,
+                 atom_vocab=atom_vocab,
+diff --git a/training/BloomRXN/ECTraining/models.py b/training/BloomRXN/ECTraining/models.py
+index f47b8f6..5192f9e 100644
+--- a/training/BloomRXN/ECTraining/models.py
++++ b/training/BloomRXN/ECTraining/models.py
+@@ -1,7 +1,7 @@
+ from typing import Callable
+ 
+ import torch
+-from Bloom.BloomRXN.utils import get_atom_vocab, get_bond_vocab
++from Bloom.BloomRXN.inference.Pipeline import get_atom_vocab, get_bond_vocab
+ from DataModule import ReactionDataModule
+ from torch.nn import ModuleDict
+ 
+diff --git a/training/BloomRXN/ECTraining/train.py b/training/BloomRXN/ECTraining/train.py
+index 912d06e..2dd751d 100644
+--- a/training/BloomRXN/ECTraining/train.py
++++ b/training/BloomRXN/ECTraining/train.py
+@@ -22,7 +22,9 @@ def train(
+     # setup directories
+     os.makedirs(checkpoint_dir, exist_ok=True)
+     # data module
+-    dm = ReactionDataModule()
++    dm = ReactionDataModule(
++        data_dir="/home/gunam/storage/workspace/bearlinker_workspace/zenodo/reaction_ec_tensors/"
++    )
+     dm.setup()
+     # model
+     model = get_model(
+@@ -59,7 +61,7 @@ parser.add_argument(
+ parser.add_argument(
+     "-logger_entity",
+     help="wandb entity",
+-    default="user",
++    default="magarvey",
+ )
+ parser.add_argument(
+     "-logger_name",

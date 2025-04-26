@@ -25,10 +25,11 @@ def train(
     os.makedirs(checkpoint_dir, exist_ok=True)
     # data module
     dm = LNKDataModule()
-    dm.setup()
+    weights = dm.calculate_weights()
     # model
     model = get_model(
-        node_embedding_dim=node_embedding_dim,
+        weights=weights,
+        embedding_dim=node_embedding_dim,
         edge_embedding_dim=edge_embedding_dim,
         num_gnn_heads=num_gnn_heads,
         num_transformer_heads=num_transformer_heads,
@@ -61,7 +62,7 @@ parser.add_argument(
 parser.add_argument(
     "-logger_entity",
     help="wandb entity",
-    default="user",
+    default="magarvey",
 )
 parser.add_argument(
     "-logger_name",

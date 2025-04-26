@@ -1,7 +1,7 @@
 from typing import Callable
 
 import torch
-from Bloom.BloomRXN.utils import get_atom_vocab, get_bond_vocab
+from Bloom.BloomRXN.inference.Pipeline import get_atom_vocab, get_bond_vocab
 from DataModule import ReactionDataModule
 from torch.nn import ModuleDict
 

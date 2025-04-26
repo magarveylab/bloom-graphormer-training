@@ -22,7 +22,9 @@ def train(
     # setup directories
     os.makedirs(checkpoint_dir, exist_ok=True)
     # data module
-    dm = ReactionDataModule()
+    dm = ReactionDataModule(
+        data_dir="/home/gunam/storage/workspace/bearlinker_workspace/zenodo/reaction_ec_fewshot_tensors/"
+    )
     dm.setup()
     # model
     model = get_model(
@@ -61,7 +63,7 @@ parser.add_argument(
 parser.add_argument(
     "-logger_entity",
     help="wandb entity",
-    default="user",
+    default="magarvey",
 )
 parser.add_argument(
     "-logger_name",

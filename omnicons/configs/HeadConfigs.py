@@ -6,6 +6,10 @@ from omnicons.configs.Config import ConfigTemplate
 from omnicons.models.heads.EdgeClassification import (
     SingleLabelEdgeClassificationHead,
 )
+from omnicons.models.heads.GraphClassification import (
+    MultiLabelGraphClassification,
+    SingleLabelGraphClassification,
+)
 from omnicons.models.heads.NodeClassification import (
     MultiLabelNodeClassificationHead,
     SingleLabelNodeClassificationHead,
@@ -103,6 +107,41 @@ class EdgeClsTaskHeadConfig(ConfigTemplate):
         return SingleLabelEdgeClassificationHead(**self.properties)
 
 
+class GraphClsTaskHeadConfig(ConfigTemplate):
+
+    def __init__(
+        self,
+        hidden_size: int = 768,
+        hidden_dropout_prob: float = 0.1,
+        num_labels: int = 2,
+        class_weight: Optional[List[float]] = None,
+        multi_label: bool = False,
+        analyze_inputs: List[str] = ["a"],
+        loss_scalar: float = 1.0,
+    ):
+        super().__init__(
+            base="GraphClsTaskHead",
+            properties={
+                "hidden_size": hidden_size,
+                "hidden_dropout_prob": hidden_dropout_prob,
+                "num_labels": num_labels,
+                "class_weight": class_weight,
+                "multi_label": multi_label,
+                "analyze_inputs": analyze_inputs,
+                "loss_scalar": loss_scalar,
+            },
+        )
+
+    def get_model(self) -> nn.Module:
+        if self.properties["multi_label"] == True:
+            return MultiLabelGraphClassification(**self.properties)
+        else:
+            return SingleLabelGraphClassification(**self.properties)
+
+
 HeadConfig = Union[
-    NodeClsTaskHeadConfig, SiameseGraphClsTaskHeadConfig, EdgeClsTaskHeadConfig
+    NodeClsTaskHeadConfig,
+    SiameseGraphClsTaskHeadConfig,
+    EdgeClsTaskHeadConfig,
+    GraphClsTaskHeadConfig,
 ]

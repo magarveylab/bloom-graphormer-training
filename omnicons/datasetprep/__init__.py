@@ -143,9 +143,9 @@ def prepare_reaction_ec_dataset(
 
     atom_vocab = get_atom_vocab()
     bond_vocab = get_bond_vocab()
-    ec1_class_dict = get_ec_class_dict(level=1, reverse=True)
-    ec2_class_dict = get_ec_class_dict(level=2, reverse=True)
-    ec3_class_dict = get_ec_class_dict(level=3, reverse=True)
+    ec1_class_dict = get_ec_class_dict(level=1, reverse=False)
+    ec2_class_dict = get_ec_class_dict(level=2, reverse=False)
+    ec3_class_dict = get_ec_class_dict(level=3, reverse=False)
 
     os.makedirs(f"{output_dir}/train", exist_ok=True)
     os.makedirs(f"{output_dir}/val", exist_ok=True)
@@ -153,13 +153,13 @@ def prepare_reaction_ec_dataset(
 
     data = pd.read_csv(rxn_dataset_fp).to_dict("records")
     for rec in tqdm(data):
-        split = rec["split"]
-        reaction_id = rec["reaction_id"]
-        rxn_smiles = rec["rxn_smiles"]
-        output_fp = f"{output_dir}/{split}/{reaction_id}.pt"
-        if os.path.exists(output_fp):
-            continue
         try:
+            split = rec["split"]
+            reaction_id = rec["reaction_id"]
+            rxn_smiles = rec["rxn_smiles"]
+            output_fp = f"{output_dir}/{split}/{reaction_id}.pt"
+            if os.path.exists(output_fp):
+                continue
             data = rxnsmiles2tensor(
                 rxn_smiles,
                 atom_vocab=atom_vocab,
@@ -181,7 +181,7 @@ def prepare_reaction_ec_dataset(
 
 
 def prepare_reaction_ec_fewshot_dataset(
-    rxn_dataset_fp: str = f"{dataset_dir}/reaction_ec_fewshot_dataset",
+    rxn_dataset_fp: str = f"{dataset_dir}/reaction_fewshot_ec.csv",
     output_dir: str = f"{dataset_dir}/reaction_ec_fewshot_tensors",
 ):
     from Bloom.BloomRXN.inference.Pipeline import (
@@ -194,9 +194,9 @@ def prepare_reaction_ec_fewshot_dataset(
 
     atom_vocab = get_atom_vocab()
     bond_vocab = get_bond_vocab()
-    ec1_class_dict = get_ec_class_dict(level=1, reverse=True)
-    ec2_class_dict = get_ec_class_dict(level=2, reverse=True)
-    ec3_class_dict = get_ec_class_dict(level=3, reverse=True)
+    ec1_class_dict = get_ec_class_dict(level=1, reverse=False)
+    ec2_class_dict = get_ec_class_dict(level=2, reverse=False)
+    ec3_class_dict = get_ec_class_dict(level=3, reverse=False)
 
     os.makedirs(f"{output_dir}/train", exist_ok=True)
     os.makedirs(f"{output_dir}/val", exist_ok=True)
@@ -204,50 +204,55 @@ def prepare_reaction_ec_fewshot_dataset(
 
     data = pd.read_csv(rxn_dataset_fp).to_dict("records")
     for rec in tqdm(data):
-        split = rec["split"]
-        rxn_id_a = rec["rxn_id_a"]
-        rxn_id_b = rec["rxn_id_b"]
-        output_fp = f"{output_dir}/{split}/{rxn_id_a}_{rxn_id_b}.pt"
-        if os.path.exists(output_fp):
-            continue
-        rxn_smiles_a = rec["rxn_smiles_a"]
-        rxn_smiles_b = rec["rxn_smiles_b"]
-        # create tensors
-        data_a = rxnsmiles2tensor(
-            rxn_smiles_a,
-            atom_vocab=atom_vocab,
-            bond_vocab=bond_vocab,
-        )
-        data_b = rxnsmiles2tensor(
-            rxn_smiles_b,
-            atom_vocab=atom_vocab,
-            bond_vocab=bond_vocab,
-        )
-        common_y = Data(
-            pair_match___a___b=torch.LongTensor([rec["pair_match"]])
-        )
-        data = MultiInputData(
-            graphs={"a": data_a.graphs["a"], "b": data_b.graphs["a"]},
-            common_y=common_y,
-        )
-        # add ec labels to graphs a
-        data.graphs["a"].ec1 = torch.LongTensor(
-            [ec1_class_dict["ec1"].get(rec["ec1_a"], -100)]
-        )
-        data.graphs["a"].ec2 = torch.LongTensor(
-            [ec2_class_dict["ec2"].get(rec["ec2_b"], -100)]
-        )
-        data.graphs["a"].ec3 = torch.LongTensor(
-            [ec3_class_dict["ec3"].get(rec["ec3_a"], -100)]
-        )
-        # add ec labels to graphs b
-        data.graphs["b"].ec1 = torch.LongTensor(
-            [ec1_class_dict["ec1"].get(rec["ec1_b"], -100)]
-        )
-        data.graphs["b"].ec2 = torch.LongTensor(
-            [ec2_class_dict["ec2"].get(rec["ec2_b"], -100)]
-        )
-        data.graphs["b"].ec3 = torch.LongTensor(
-            [ec3_class_dict["ec3"].get(rec["ec3_b"], -100)]
-        )
-        torch.save(data, output_fp)
+        try:
+            split = rec["split"]
+            rxn_id_a = rec["rxn_id_a"]
+            rxn_id_b = rec["rxn_id_b"]
+            output_fp = f"{output_dir}/{split}/{rxn_id_a}_{rxn_id_b}.pt"
+            if os.path.exists(output_fp):
+                continue
+            rxn_smiles_a = rec["rxn_smiles_a"]
+            rxn_smiles_b = rec["rxn_smiles_b"]
+            # create tensors
+            data_a = rxnsmiles2tensor(
+                rxn_smiles_a,
+                atom_vocab=atom_vocab,
+                bond_vocab=bond_vocab,
+            )
+            data_b = rxnsmiles2tensor(
+                rxn_smiles_b,
+                atom_vocab=atom_vocab,
+                bond_vocab=bond_vocab,
+            )
+            data_a = MultiInputData(graphs={"a": data_a})
+            data_b = MultiInputData(graphs={"a": data_b})
+            common_y = Data(
+                pair_match___a___b=torch.LongTensor([rec["pair_match"]])
+            )
+            data = MultiInputData(
+                graphs={"a": data_a.graphs["a"], "b": data_b.graphs["a"]},
+                common_y=common_y,
+            )
+            # add ec labels to graphs a
+            data.graphs["a"].ec1 = torch.LongTensor(
+                [ec1_class_dict.get(rec["ec1_a"], -100)]
+            )
+            data.graphs["a"].ec2 = torch.LongTensor(
+                [ec2_class_dict.get(rec["ec2_b"], -100)]
+            )
+            data.graphs["a"].ec3 = torch.LongTensor(
+                [ec3_class_dict.get(rec["ec3_a"], -100)]
+            )
+            # add ec labels to graphs b
+            data.graphs["b"].ec1 = torch.LongTensor(
+                [ec1_class_dict.get(rec["ec1_b"], -100)]
+            )
+            data.graphs["b"].ec2 = torch.LongTensor(
+                [ec2_class_dict.get(rec["ec2_b"], -100)]
+            )
+            data.graphs["b"].ec3 = torch.LongTensor(
+                [ec3_class_dict.get(rec["ec3_b"], -100)]
+            )
+            torch.save(data, output_fp)
+        except:
+            print(rec)

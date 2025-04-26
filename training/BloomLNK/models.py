@@ -199,7 +199,6 @@ def get_heads(embedding_dim: int, weights: dict):
 
 
 def get_model(
-    vocab_dir: str,
     weights: dict,
     embedding_dim: int,
     edge_embedding_dim: int,
@@ -208,9 +207,7 @@ def get_model(
     optimizer: Callable = get_deepspeed_adamw,
 ):
     # model setup
-    vocab = get_vocab(
-        vocab_dir=vocab_dir,
-    )
+    vocab = get_vocab()
     node_encoders = get_node_encoders(
         vocab=vocab,
         embedding_dim=embedding_dim,

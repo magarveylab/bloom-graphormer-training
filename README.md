@@ -5,6 +5,7 @@ Training scripts for BLOOM Graphormer models for publication
 
 ### Training-Only Installation
 1. Install the Package via Pip Symlinks.
+**NOTE** The training environment is only compatible with CUDA 12.
 ```
     conda env create -f bloom-training.yml
     conda activate bloom-training

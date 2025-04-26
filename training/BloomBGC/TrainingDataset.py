@@ -51,6 +51,7 @@ class TrainingDataset(Dataset):
                 edge_types_to_consider=self.edge_types_to_consider,
                 node_label_class_dict=self.class_dict,
                 apply_edge_attr=False,
+                apply_multigraph_wrapper=True,
             )
         self.datapoints = sorted(self.tensor_cache)
 

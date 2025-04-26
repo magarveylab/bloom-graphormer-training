@@ -1,0 +1,323 @@
+diff --git a/omnicons/configs/HeadConfigs.py b/omnicons/configs/HeadConfigs.py
+index fa91b68..7894897 100644
+--- a/omnicons/configs/HeadConfigs.py
++++ b/omnicons/configs/HeadConfigs.py
+@@ -6,6 +6,10 @@ from omnicons.configs.Config import ConfigTemplate
+ from omnicons.models.heads.EdgeClassification import (
+     SingleLabelEdgeClassificationHead,
+ )
++from omnicons.models.heads.GraphClassification import (
++    MultiLabelGraphClassification,
++    SingleLabelGraphClassification,
++)
+ from omnicons.models.heads.NodeClassification import (
+     MultiLabelNodeClassificationHead,
+     SingleLabelNodeClassificationHead,
+@@ -103,6 +107,41 @@ class EdgeClsTaskHeadConfig(ConfigTemplate):
+         return SingleLabelEdgeClassificationHead(**self.properties)
+ 
+ 
++class GraphClsTaskHeadConfig(ConfigTemplate):
++
++    def __init__(
++        self,
++        hidden_size: int = 768,
++        hidden_dropout_prob: float = 0.1,
++        num_labels: int = 2,
++        class_weight: Optional[List[float]] = None,
++        multi_label: bool = False,
++        analyze_inputs: List[str] = ["a"],
++        loss_scalar: float = 1.0,
++    ):
++        super().__init__(
++            base="GraphClsTaskHead",
++            properties={
++                "hidden_size": hidden_size,
++                "hidden_dropout_prob": hidden_dropout_prob,
++                "num_labels": num_labels,
++                "class_weight": class_weight,
++                "multi_label": multi_label,
++                "analyze_inputs": analyze_inputs,
++                "loss_scalar": loss_scalar,
++            },
++        )
++
++    def get_model(self) -> nn.Module:
++        if self.properties["multi_label"] == True:
++            return MultiLabelGraphClassification(**self.properties)
++        else:
++            return SingleLabelGraphClassification(**self.properties)
++
++
+ HeadConfig = Union[
+-    NodeClsTaskHeadConfig, SiameseGraphClsTaskHeadConfig, EdgeClsTaskHeadConfig
++    NodeClsTaskHeadConfig,
++    SiameseGraphClsTaskHeadConfig,
++    EdgeClsTaskHeadConfig,
++    GraphClsTaskHeadConfig,
+ ]
+diff --git a/omnicons/datasetprep/__init__.py b/omnicons/datasetprep/__init__.py
+index 4308b95..2a085a4 100644
+--- a/omnicons/datasetprep/__init__.py
++++ b/omnicons/datasetprep/__init__.py
+@@ -143,9 +143,9 @@ def prepare_reaction_ec_dataset(
+ 
+     atom_vocab = get_atom_vocab()
+     bond_vocab = get_bond_vocab()
+-    ec1_class_dict = get_ec_class_dict(level=1, reverse=True)
+-    ec2_class_dict = get_ec_class_dict(level=2, reverse=True)
+-    ec3_class_dict = get_ec_class_dict(level=3, reverse=True)
++    ec1_class_dict = get_ec_class_dict(level=1, reverse=False)
++    ec2_class_dict = get_ec_class_dict(level=2, reverse=False)
++    ec3_class_dict = get_ec_class_dict(level=3, reverse=False)
+ 
+     os.makedirs(f"{output_dir}/train", exist_ok=True)
+     os.makedirs(f"{output_dir}/val", exist_ok=True)
+@@ -153,13 +153,13 @@ def prepare_reaction_ec_dataset(
+ 
+     data = pd.read_csv(rxn_dataset_fp).to_dict("records")
+     for rec in tqdm(data):
+-        split = rec["split"]
+-        reaction_id = rec["reaction_id"]
+-        rxn_smiles = rec["rxn_smiles"]
+-        output_fp = f"{output_dir}/{split}/{reaction_id}.pt"
+-        if os.path.exists(output_fp):
+-            continue
+         try:
++            split = rec["split"]
++            reaction_id = rec["reaction_id"]
++            rxn_smiles = rec["rxn_smiles"]
++            output_fp = f"{output_dir}/{split}/{reaction_id}.pt"
++            if os.path.exists(output_fp):
++                continue
+             data = rxnsmiles2tensor(
+                 rxn_smiles,
+                 atom_vocab=atom_vocab,
+@@ -181,7 +181,7 @@ def prepare_reaction_ec_dataset(
+ 
+ 
+ def prepare_reaction_ec_fewshot_dataset(
+-    rxn_dataset_fp: str = f"{dataset_dir}/reaction_ec_fewshot_dataset",
++    rxn_dataset_fp: str = f"{dataset_dir}/reaction_fewshot_ec.csv",
+     output_dir: str = f"{dataset_dir}/reaction_ec_fewshot_tensors",
+ ):
+     from Bloom.BloomRXN.inference.Pipeline import (
+@@ -194,9 +194,9 @@ def prepare_reaction_ec_fewshot_dataset(
+ 
+     atom_vocab = get_atom_vocab()
+     bond_vocab = get_bond_vocab()
+-    ec1_class_dict = get_ec_class_dict(level=1, reverse=True)
+-    ec2_class_dict = get_ec_class_dict(level=2, reverse=True)
+-    ec3_class_dict = get_ec_class_dict(level=3, reverse=True)
++    ec1_class_dict = get_ec_class_dict(level=1, reverse=False)
++    ec2_class_dict = get_ec_class_dict(level=2, reverse=False)
++    ec3_class_dict = get_ec_class_dict(level=3, reverse=False)
+ 
+     os.makedirs(f"{output_dir}/train", exist_ok=True)
+     os.makedirs(f"{output_dir}/val", exist_ok=True)
+@@ -204,50 +204,55 @@ def prepare_reaction_ec_fewshot_dataset(
+ 
+     data = pd.read_csv(rxn_dataset_fp).to_dict("records")
+     for rec in tqdm(data):
+-        split = rec["split"]
+-        rxn_id_a = rec["rxn_id_a"]
+-        rxn_id_b = rec["rxn_id_b"]
+-        output_fp = f"{output_dir}/{split}/{rxn_id_a}_{rxn_id_b}.pt"
+-        if os.path.exists(output_fp):
+-            continue
+-        rxn_smiles_a = rec["rxn_smiles_a"]
+-        rxn_smiles_b = rec["rxn_smiles_b"]
+-        # create tensors
+-        data_a = rxnsmiles2tensor(
+-            rxn_smiles_a,
+-            atom_vocab=atom_vocab,
+-            bond_vocab=bond_vocab,
+-        )
+-        data_b = rxnsmiles2tensor(
+-            rxn_smiles_b,
+-            atom_vocab=atom_vocab,
+-            bond_vocab=bond_vocab,
+-        )
+-        common_y = Data(
+-            pair_match___a___b=torch.LongTensor([rec["pair_match"]])
+-        )
+-        data = MultiInputData(
+-            graphs={"a": data_a.graphs["a"], "b": data_b.graphs["a"]},
+-            common_y=common_y,
+-        )
+-        # add ec labels to graphs a
+-        data.graphs["a"].ec1 = torch.LongTensor(
+-            [ec1_class_dict["ec1"].get(rec["ec1_a"], -100)]
+-        )
+-        data.graphs["a"].ec2 = torch.LongTensor(
+-            [ec2_class_dict["ec2"].get(rec["ec2_b"], -100)]
+-        )
+-        data.graphs["a"].ec3 = torch.LongTensor(
+-            [ec3_class_dict["ec3"].get(rec["ec3_a"], -100)]
+-        )
+-        # add ec labels to graphs b
+-        data.graphs["b"].ec1 = torch.LongTensor(
+-            [ec1_class_dict["ec1"].get(rec["ec1_b"], -100)]
+-        )
+-        data.graphs["b"].ec2 = torch.LongTensor(
+-            [ec2_class_dict["ec2"].get(rec["ec2_b"], -100)]
+-        )
+-        data.graphs["b"].ec3 = torch.LongTensor(
+-            [ec3_class_dict["ec3"].get(rec["ec3_b"], -100)]
+-        )
+-        torch.save(data, output_fp)
++        try:
++            split = rec["split"]
++            rxn_id_a = rec["rxn_id_a"]
++            rxn_id_b = rec["rxn_id_b"]
++            output_fp = f"{output_dir}/{split}/{rxn_id_a}_{rxn_id_b}.pt"
++            if os.path.exists(output_fp):
++                continue
++            rxn_smiles_a = rec["rxn_smiles_a"]
++            rxn_smiles_b = rec["rxn_smiles_b"]
++            # create tensors
++            data_a = rxnsmiles2tensor(
++                rxn_smiles_a,
++                atom_vocab=atom_vocab,
++                bond_vocab=bond_vocab,
++            )
++            data_b = rxnsmiles2tensor(
++                rxn_smiles_b,
++                atom_vocab=atom_vocab,
++                bond_vocab=bond_vocab,
++            )
++            data_a = MultiInputData(graphs={"a": data_a})
++            data_b = MultiInputData(graphs={"a": data_b})
++            common_y = Data(
++                pair_match___a___b=torch.LongTensor([rec["pair_match"]])
++            )
++            data = MultiInputData(
++                graphs={"a": data_a.graphs["a"], "b": data_b.graphs["a"]},
++                common_y=common_y,
++            )
++            # add ec labels to graphs a
++            data.graphs["a"].ec1 = torch.LongTensor(
++                [ec1_class_dict.get(rec["ec1_a"], -100)]
++            )
++            data.graphs["a"].ec2 = torch.LongTensor(
++                [ec2_class_dict.get(rec["ec2_b"], -100)]
++            )
++            data.graphs["a"].ec3 = torch.LongTensor(
++                [ec3_class_dict.get(rec["ec3_a"], -100)]
++            )
++            # add ec labels to graphs b
++            data.graphs["b"].ec1 = torch.LongTensor(
++                [ec1_class_dict.get(rec["ec1_b"], -100)]
++            )
++            data.graphs["b"].ec2 = torch.LongTensor(
++                [ec2_class_dict.get(rec["ec2_b"], -100)]
++            )
++            data.graphs["b"].ec3 = torch.LongTensor(
++                [ec3_class_dict.get(rec["ec3_b"], -100)]
++            )
++            torch.save(data, output_fp)
++        except:
++            print(rec)
+diff --git a/test.py b/test.py
+index 9d30342..347b5d8 100644
+--- a/test.py
++++ b/test.py
+@@ -3,5 +3,5 @@ from omnicons.datasetprep import (
+     prepare_reaction_ec_fewshot_dataset,
+ )
+ 
+-prepare_reaction_ec_dataset()
++# prepare_reaction_ec_dataset()
+ prepare_reaction_ec_fewshot_dataset()
+diff --git a/training/BloomLNK/models.py b/training/BloomLNK/models.py
+index d297287..4bd9abd 100644
+--- a/training/BloomLNK/models.py
++++ b/training/BloomLNK/models.py
+@@ -199,7 +199,6 @@ def get_heads(embedding_dim: int, weights: dict):
+ 
+ 
+ def get_model(
+-    vocab_dir: str,
+     weights: dict,
+     embedding_dim: int,
+     edge_embedding_dim: int,
+@@ -208,9 +207,7 @@ def get_model(
+     optimizer: Callable = get_deepspeed_adamw,
+ ):
+     # model setup
+-    vocab = get_vocab(
+-        vocab_dir=vocab_dir,
+-    )
++    vocab = get_vocab()
+     node_encoders = get_node_encoders(
+         vocab=vocab,
+         embedding_dim=embedding_dim,
+diff --git a/training/BloomLNK/train.py b/training/BloomLNK/train.py
+index feddc00..5a2ee38 100644
+--- a/training/BloomLNK/train.py
++++ b/training/BloomLNK/train.py
+@@ -24,11 +24,15 @@ def train(
+     # setup directories
+     os.makedirs(checkpoint_dir, exist_ok=True)
+     # data module
+-    dm = LNKDataModule()
+-    dm.setup()
++    dm = LNKDataModule(
++        subset=10,
++        graph_dir="/home/gunam/storage/workspace/bearlinker_workspace/zenodo/e2",
++    )
++    weights = dm.calculate_weights()
+     # model
+     model = get_model(
+-        node_embedding_dim=node_embedding_dim,
++        weights=weights,
++        embedding_dim=node_embedding_dim,
+         edge_embedding_dim=edge_embedding_dim,
+         num_gnn_heads=num_gnn_heads,
+         num_transformer_heads=num_transformer_heads,
+@@ -61,7 +65,7 @@ parser.add_argument(
+ parser.add_argument(
+     "-logger_entity",
+     help="wandb entity",
+-    default="user",
++    default="magarvey",
+ )
+ parser.add_argument(
+     "-logger_name",
+diff --git a/training/BloomRXN/ECTraining/models.py b/training/BloomRXN/ECTraining/models.py
+index f47b8f6..5192f9e 100644
+--- a/training/BloomRXN/ECTraining/models.py
++++ b/training/BloomRXN/ECTraining/models.py
+@@ -1,7 +1,7 @@
+ from typing import Callable
+ 
+ import torch
+-from Bloom.BloomRXN.utils import get_atom_vocab, get_bond_vocab
++from Bloom.BloomRXN.inference.Pipeline import get_atom_vocab, get_bond_vocab
+ from DataModule import ReactionDataModule
+ from torch.nn import ModuleDict
+ 
+diff --git a/training/BloomRXN/ECTraining/train.py b/training/BloomRXN/ECTraining/train.py
+index 912d06e..2dd751d 100644
+--- a/training/BloomRXN/ECTraining/train.py
++++ b/training/BloomRXN/ECTraining/train.py
+@@ -22,7 +22,9 @@ def train(
+     # setup directories
+     os.makedirs(checkpoint_dir, exist_ok=True)
+     # data module
+-    dm = ReactionDataModule()
++    dm = ReactionDataModule(
++        data_dir="/home/gunam/storage/workspace/bearlinker_workspace/zenodo/reaction_ec_tensors/"
++    )
+     dm.setup()
+     # model
+     model = get_model(
+@@ -59,7 +61,7 @@ parser.add_argument(
+ parser.add_argument(
+     "-logger_entity",
+     help="wandb entity",
+-    default="user",
++    default="magarvey",
+ )
+ parser.add_argument(
+     "-logger_name",

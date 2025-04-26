@@ -1,7 +1,7 @@
 from typing import Callable
 
 import torch
-from Bloom.BloomRXN.utils import get_atom_vocab, get_bond_vocab
+from Bloom.BloomRXN.inference.Pipeline import get_atom_vocab, get_bond_vocab
 from DataModule import ReactionDataModule
 from torch.nn import ModuleDict
 
@@ -125,8 +125,7 @@ def get_heads(
         analyze_inputs=["a", "b"],
     )
     heads["pair_match"] = SiameseGraphClsTaskHeadConfig(
-        hidden_size_a=embedding_dim,
-        hidden_size_b=embedding_dim,
+        hidden_size=embedding_dim,
         hidden_dropout_prob=0.1,
         num_labels=2,
         class_weight=None,
