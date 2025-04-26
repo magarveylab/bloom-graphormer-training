@@ -72,21 +72,21 @@ prepare_reaction_ec_fewshot_dataset()
 **Masked Language Modeling (MLM)** – Trains the model to predict masked atoms within molecular graphs.
 ```
 cd training/BloomRXN/MLMTraining
-CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py -logger_entity new_user
+CUDA_VISIBLE_DEVICES=0 python train.py -logger_entity new_user
 python save.py
 python export.py
 ```
 **Supervised Learning of EC Hierarchy** – Trains the model to predict enzyme classifications across all three EC levels using parallel classification heads. This multi-task setup captures hierarchical relationships and improves functional resolution across diverse enzymatic reactions.
 ```
 cd training/BloomRXN/ECTraining
-CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py -logger_entity new_user
+CUDA_VISIBLE_DEVICES=0 python train.py -logger_entity new_user
 python save.py
 python export.py
 ```
 **Contrastive Learning of EC Hierarchy** – Trains the model to distinguish whether pairs of reactions share the same EC level 4 classification. This is performed in conjunction with supervised parallel classification across EC levels 1 to 3, enabling the model to learn both fine-grained and hierarchical enzymatic relationships.
 ```
 cd training/BloomRXN/ECFewShotTraining
-CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py -logger_entity new_user
+CUDA_VISIBLE_DEVICES=0 python train.py -logger_entity new_user
 python save.py
 python export.py
 ```
@@ -106,7 +106,7 @@ prepare_lnk_graphs()
 **Supervised Classification of Pairs** – Trains the model to predict whether a given BGC–metabolite pair represents a true biosynthetic link. Ground truth pairs are derived from known associations, while negatives are sampled to maintain class balance during training.
 ```
 cd training/BloomLNK
-CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py -logger_entity new_user
+CUDA_VISIBLE_DEVICES=0 python train.py -logger_entity new_user
 python save.py
 python export.py
 ```
