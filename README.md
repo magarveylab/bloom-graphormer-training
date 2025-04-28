@@ -13,7 +13,7 @@ Training scripts for BLOOM Graphormer models for publication
 ```
 2. Set Up Weights & Biases (wandb)
     - Follow the [official quickstart guide](https://docs.wandb.ai/quickstart/) to configure Weights & Biases for experiment tracking.
-3. Download the datasets from Zenodo and place the extracted contents in this [directory](https://github.com/magarveylab/bloom-graphormer-training/tree/main/omnicons/datasets).
+3. Download the datasets from [Zenodo](https://zenodo.org/doi/10.5281/zenodo.15285626) and place the extracted contents in this [directory](https://github.com/magarveylab/bloom-graphormer-training/tree/main/omnicons/datasets).
 
 ## BLOOM-MOL Training
 
