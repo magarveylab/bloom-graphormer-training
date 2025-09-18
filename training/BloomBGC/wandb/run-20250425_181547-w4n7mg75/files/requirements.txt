@@ -158,7 +158,7 @@ timeout-decorator==0.5.0
 tinycss2==1.4.0
 tokenizers==0.19.1
 tomli==2.0.1
-torch==2.4.0
+torch==2.7.0
 torch_geometric==2.5.3
 torchaudio==2.4.0
 torchmetrics==1.4.1
