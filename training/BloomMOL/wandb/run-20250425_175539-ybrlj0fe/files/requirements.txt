@@ -118,7 +118,7 @@ platformdirs==4.2.2
 plotly==6.0.0
 portalocker==2.10.1
 prompt_toolkit==3.0.50
-protobuf==5.27.3
+protobuf==5.29.5
 psutil==6.0.0
 psycopg2==2.9.9
 ptyprocess==0.7.0
